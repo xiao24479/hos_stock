@@ -2,28 +2,23 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Encore\Admin\Auth\Database\Administrator as BaseAdministrator;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable
+class User extends BaseAdministrator
 {
-    use Notifiable;
-
     /**
-     * The attributes that are mass assignable.
+     * A user has and belongs to many roles.
      *
-     * @var array
+     * @return BelongsToMany
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    public function hospitals() : BelongsToMany
+    {
+        $pivotTable = 'admin_user_hospitals';
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+        $relatedModel = Hospital::class;
+
+        return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'hos_id');
+    }
+
 }
