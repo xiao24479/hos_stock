@@ -41,8 +41,8 @@
           @endforeach
         @endif
 
-        <input type="input" class="form-control" placeholder="{{ trans('admin.username') }}" name="username" value="{{ old('username') }}">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <input type="input" class="form-control" placeholder="{{ trans('admin.username') }}" name="username" value="{{ old('username') }}" autocomplete="off">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback {!! !$errors->has('password') ?: 'has-error' !!}">
 
@@ -52,13 +52,30 @@
           @endforeach
         @endif
 
-        <input type="password" class="form-control" placeholder="{{ trans('admin.password') }}" name="password">
+        <input type="password" class="form-control" placeholder="{{ trans('admin.password') }}" name="password" autocomplete="off">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback {!! !$errors->has('captcha') ?: 'has-error' !!}">
+
+        @if($errors->has('captcha'))
+          @foreach($errors->get('captcha') as $message)
+            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label><br>
+          @endforeach
+        @endif
+        <div class="row">
+          <div class="col-sm-7 col-xs-6" style="position: relative;">
+            <input type="text" class="form-control" placeholder="验证码" name="captcha" autocomplete="off">
+            <span class="glyphicon glyphicon-tower form-control-feedback" style="right: 15px;"></span>
+          </div>
+          <div class="col-sm-5 col-xs-6">
+            <img src="{{Captcha::src('flat')}}" onclick="this.src='{{captcha_src('flat')}}'+Math.random()" style="max-width:100%;" >
+          </div>
+        </div>
       </div>
       <div class="row">
 
         <!-- /.col -->
-        <div class="col-xs-4 col-md-offset-4">
+        <div class="col-xs-12">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('admin.login') }}</button>
         </div>

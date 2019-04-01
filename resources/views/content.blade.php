@@ -3,8 +3,8 @@
 @section('content')
     <section class="content-header">
         <h1>
-            {{ $header ?: trans('admin.title') }}
-            <small>{{ $description ?: trans('admin.description') }}</small>
+            {{ $header }}
+            <small>{{ $description }}</small>
         </h1>
 
         <!-- breadcrumb start -->

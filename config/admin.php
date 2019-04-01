@@ -52,7 +52,7 @@ return [
 
         'namespace' => 'App\\Admin\\Controllers',
 
-        'middleware' => ['web', 'admin'],
+        'middleware' => ['web', 'admin', 'custom'],
     ],
 
     /*
@@ -132,9 +132,10 @@ return [
         'disk' => 'admin',
 
         // Image and file upload path under the disk above.
+        //文件上传路径配置
         'directory' => [
-            'image' => 'images',
-            'file'  => 'files',
+            'image' => 'admin/images/'.date('Ymd'),
+            'file'  => 'admin/files/'.date('Ymd'),
         ],
     ],
 
@@ -190,7 +191,8 @@ return [
         /*
          * Only logging allowed methods in the list
          */
-        'allowed_methods' => ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH'],
+        //'allowed_methods' => ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH'],
+        'allowed_methods' => [ 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH'],
 
         /*
          * Routes that will not log to database.
@@ -227,7 +229,7 @@ return [
     |    "skin-red", "skin-red-light", "skin-black", "skin-black-light".
     |
     */
-    'skin' => 'skin-green-light',
+    'skin' => 'skin-blue-light',
 
     /*
     |--------------------------------------------------------------------------
@@ -241,7 +243,7 @@ return [
     | "sidebar-mini".
     |
     */
-    'layout' => ['fixed'],
+    'layout' => ['sidebar-mini'],
     //'layout' => ['layout-boxed'],
 
     /*
@@ -292,7 +294,7 @@ return [
     |
     | Whether enable default breadcrumb for every page content.
     */
-    'enable_default_breadcrumb' => true,
+    'enable_default_breadcrumb' => false,
 
     /*
     |--------------------------------------------------------------------------

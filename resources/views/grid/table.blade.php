@@ -1,47 +1,50 @@
 <div class="box">
     @if(isset($title))
-    <div class="box-header with-border">
-        <h3 class="box-title"> {{ $title }}</h3>
-    </div>
+        <div class="box-header with-border">
+            <h3 class="box-title"> {{ $title }}</h3>
+        </div>
     @endif
 
-    @if ( $grid->allowTools() || $grid->allowExport() || $grid->allowCreation() )
-    <div class="box-header with-border">
-        <div class="pull-right">
-            {!! $grid->renderExportButton() !!}
-            {!! $grid->renderCreateButton() !!}
-        </div>
-        @if ( $grid->allowTools() )
-        <span>
+    @if ( $grid->showTools() || $grid->showExportBtn() || $grid->showCreateBtn() )
+        <div class="box-header with-border">
+            <div class="pull-right">
+                {!! $grid->renderColumnSelector() !!}
+                {!! $grid->renderExportButton() !!}
+                {!! $grid->renderCreateButton() !!}
+            </div>
+            @if ( $grid->showTools() )
+                <span>
             {!! $grid->renderHeaderTools() !!}
         </span>
-        @endif
-    </div>
+            @endif
+        </div>
     @endif
 
     {!! $grid->renderFilter() !!}
 
-    <!-- /.box-header -->
+    {!! $grid->renderHeader() !!}
+
+<!-- /.box-header -->
     <div class="box-body table-responsive no-padding">
         <table class="table table-hover">
             <thead>
-                <tr>
-                    @foreach($grid->columns() as $column)
+            <tr>
+                @foreach($grid->visibleColumns() as $column)
                     <th>{{$column->getLabel()}}{!! $column->sorter() !!}</th>
-                    @endforeach
-                </tr>
+                @endforeach
+            </tr>
             </thead>
 
             <tbody>
-                @foreach($grid->rows() as $row)
+            @foreach($grid->rows() as $row)
                 <tr {!! $row->getRowAttributes() !!}>
-                    @foreach($grid->columnNames as $name)
-                    <td {!! $row->getColumnAttributes($name) !!}>
-                        {!! $row->column($name) !!}
-                    </td>
+                    @foreach($grid->visibleColumnNames() as $name)
+                        <td {!! $row->getColumnAttributes($name) !!}>
+                            {!! $row->column($name) !!}
+                        </td>
                     @endforeach
                 </tr>
-                @endforeach
+            @endforeach
             </tbody>
         </table>
 

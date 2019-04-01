@@ -21,25 +21,31 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">
-                      <i class="fa fa-envelope-o"></i>
-                      <span class="label label-success">4</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/demo/posts">
-                      <i class="fa fa-bell-o"></i>
-                      <span class="label label-warning">7</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/demo/users" no-pjax="">
-                      <i class="fa fa-flag-o"></i>
-                      <span class="label label-danger">9</span>
-                    </a>
+                {{--<li>--}}
+                    {{--<a href="#">--}}
+                        {{--<span class="hidden-xs">当前医院：</span>--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+                <li class="dropdown">
+                    <a href="javascript:void(0);" id="hosValue" class="dropdown-toggle" data-toggle="dropdown">{{session('hos_name')}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        @php
+                            $uid = Admin::user()->id;
+                            $hospitals = \App\User::findOrFail($uid)->hospitals()->where('is_show',1)->get();
+                            $hos_ids = [];
+                            foreach ($hospitals as $item) {
+                                $hos_ids[] = $item['parent_id'];
+                            }
+                            $hos_ids = array_unique($hos_ids);
+                            $parent_hos = \App\Hospital::findOrFail($hos_ids)->toArray();
+                        @endphp
+                        @foreach($parent_hos as $hos)
+                            <li @if($hos['id'] == session('hos_id'))class="active"@endif ><a href="javascript:void(0);" class="switch_item_btn" hid="{{$hos['id']}}">{{$hos['title']}}</a></li>
+                            @if (!$loop->last)
+                                <li class="divider"></li>
+                            @endif
+                        @endforeach
+                    </ul>
                 </li>
 
                 {!! Admin::getNavbar()->render() !!}

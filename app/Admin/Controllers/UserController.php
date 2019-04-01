@@ -22,7 +22,6 @@ class UserController extends BaseUserController
         $userModel = User::class;
 
         $grid = new Grid(new $userModel());
-
         $grid->id('ID')->sortable();
         $grid->username(trans('admin.username'));
         $grid->name(trans('admin.name'));
@@ -43,6 +42,16 @@ class UserController extends BaseUserController
         })->label();
         $grid->created_at(trans('admin.created_at'));
         $grid->updated_at(trans('admin.updated_at'));
+
+        $grid->filter(function($filter){
+
+            // 去掉默认的id过滤器
+            $filter->disableIdFilter();
+
+            // 在这里添加字段过滤器
+            $filter->like('name', '用户名');
+
+        });
 
         $grid->actions(function (Grid\Displayers\Actions $actions) {
             if ($actions->getKey() == 1) {

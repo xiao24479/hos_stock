@@ -6,7 +6,6 @@ use Encore\Admin\Traits\AdminBuilder;
 use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class Menu.
@@ -44,5 +43,13 @@ class Hospital extends Model
         parent::__construct($attributes);
     }
 
+    public function users() : belongsToMany
+    {
+        $pivotTable = 'admin_user_hospitals';
+
+        $relatedModel = User::class;
+
+        return $this->belongsToMany($relatedModel, $pivotTable, 'hos_id', 'user_id');
+    }
 
 }
