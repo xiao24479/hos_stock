@@ -34,16 +34,22 @@ class Dashboard
             $purchaseInfo = Purchase::groupBy('goods_id')->selectRaw('goods_id, sum(quantity) as sum_quantity')->whereIn('goods_id',array_column($goods_info,'id'))->get()->toArray();
 
             $purchaseData = [];
-            foreach ($goods_info as $index => $item) {
-                foreach ($purchaseInfo as $key => $value) {
-                    if ($item['id'] == $value['goods_id']) {
-                        $purchaseData[$item['id']] = intval($value['sum_quantity']);
-                        $goodsTitles[$item['id']] = $item['name'];
-                        break;
-                    } else {
-                        $purchaseData[$item['id']] = 0;
-                        $goodsTitles[$item['id']] = $item['name'];
+            if (!empty($purchaseInfo)) {
+                foreach ($goods_info as $index => $item) {
+                    foreach ($purchaseInfo as $key => $value) {
+                        if ($item['id'] == $value['goods_id']) {
+                            $purchaseData[$item['id']] = intval($value['sum_quantity']);
+                            $goodsTitles[$item['id']] = $item['name'];
+                            break;
+                        } else {
+                            $purchaseData[$item['id']] = 0;
+                            $goodsTitles[$item['id']] = $item['name'];
+                        }
                     }
+                }
+            } else {
+                foreach ($goods_info as $index => $item) {
+                    $goodsTitles[$item['id']] = $item['name'];
                 }
             }
 
